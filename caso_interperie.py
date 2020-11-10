@@ -51,6 +51,7 @@ def imshowbien(u):
 u_k = zeros((Nx+1,Ny+1,Nz+1),dtype=double)
 u_km1 = zeros((Nx+1,Ny+1,Nz+1),dtype=double)
 
+
 #Condicion de borde inicial
 '''DEFINIR CONDICION INICIAL'''
 u_k[:,:] = 20. #20 grados inicial en todas partes
@@ -82,7 +83,7 @@ next_t = 0
 framenum = 0
 
 T = 1*dia
-Days = 1*T #Cuantos dias quiero simular
+Days = 2*T #Cuantos dias quiero simular
 
 #Vectores para acumular la t° en Puntos Interesantes
 p_1  = zeros(int32(Days/dt))     
@@ -119,12 +120,12 @@ for k in range(int32(Days/dt)):
     
     u_ambiente = 20.+10*sin((2*pi/T)*t)
     
-    u_k[ : , : , 0 ] = 0.           #cara inferior xy
-    u_k[ : , : ,-1 ] = u_ambiente   #cara superior xy
-    u_k[ : ,-1 , : ] = 0.           #cara derecha xz
-    u_k[ : , 0 , : ] = 0.           #cara izquierda xz
-    u_k[-1 , : , : ] = 0.           #cara frontal yz
-    u_k[ 0 , : , : ] = 0.           #cara atras yz
+    u_k[ : , : , 0 ] = u_k[ : , : , 1 ]-0*dx   #cara inferior xy
+    u_k[ : , : ,-1 ] = u_ambiente              #cara superior xy
+    u_k[ : ,-1 , : ] = u_k[ : ,-2 , : ]-0*dx   #cara derecha xz
+    u_k[ : , 0 , : ] = u_k[ : , 1 , : ]-0*dx   #cara izquierda xz
+    u_k[-1 , : , : ] = u_k[-2 , : , : ]-0*dx   #cara frontal yz
+    u_k[ 0 , : , : ] = u_k[ 1 , : , : ]-0*dx   #cara atras yz
     
     #Escribiendo Puntos Interesantes
     p_1[k]  = u_k[int(Nx/2),int(Ny*765/1040),int(Nz/2)]   #1
@@ -157,21 +158,21 @@ for k in range(int32(Days/dt)):
     u_k = u_km1
     
     #CB denuevo, para asegurar cumpliemiento
-    u_k[ : , : , 0 ] = 0.           #cara inferior xy
-    u_k[ : , : ,-1 ] = u_ambiente   #cara superior xy
-    u_k[ : ,-1 , : ] = 0.           #cara derecha xz
-    u_k[ : , 0 , : ] = 0.           #cara izquierda xz
-    u_k[-1 , : , : ] = 0.           #cara frontal yz
-    u_k[ 0 , : , : ] = 0.           #cara atras yz
+    u_k[ : , : , 0 ] = u_k[ : , : , 1 ]-0*dx   #cara inferior xy
+    u_k[ : , : ,-1 ] = u_ambiente              #cara superior xy
+    u_k[ : ,-1 , : ] = u_k[ : ,-2 , : ]-0*dx   #cara derecha xz
+    u_k[ : , 0 , : ] = u_k[ : , 1 , : ]-0*dx   #cara izquierda xz
+    u_k[-1 , : , : ] = u_k[-2 , : , : ]-0*dx   #cara frontal yz
+    u_k[ 0 , : , : ] = u_k[ 1 , : , : ]-0*dx   #cara atras yz
     
-    if t > next_t:
-        figure(1)
-        imshowbien(u_k)
-        title(titulo)
-        savefig("caso_interperie/frame_{0:04.0f}.png".format(framenum))
-        framenum += 1
-        next_t += dnext_t
-        close(1)
+#    if t > next_t:
+#        figure(1)
+#        imshowbien(u_k)
+#        title(titulo)
+#        savefig("caso_interperie/frame_{0:04.0f}.png".format(framenum))
+#        framenum += 1
+#        next_t += dnext_t
+#        close(1)
         
 #Ploteo historia de t° en Puntos Interesantes
 Sensores = []
@@ -197,7 +198,7 @@ for i,p in enumerate(Sensores):
 
 title("Evolución de temperatura en puntos")
 legend()
-#savefig(f'caso_1.png')
+savefig(f'caso_1.png')
 show()      
         
         
