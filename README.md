@@ -8,3 +8,7 @@
 
 
 ![Alt Text](https://github.com/raimolid/MCOC2020-P3-Final/blob/main/caso_2_intemperie.png)
+
+* Condiciones de borde y sensores:
+
+![Alt Text](https://github.com/raimolid/MCOC2020-P3-Final/blob/main/caso_1.png)
